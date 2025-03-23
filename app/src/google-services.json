@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "433457197262",
+    "project_id": "media-gallery-dev-28aa0",
+    "storage_bucket": "media-gallery-dev-28aa0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433457197262:android:d9c45d9f47e4f45d70209f",
+        "android_client_info": {
+          "package_name": "com.deva.mediagallery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433457197262-h92dm300gas4pb0jgap3aoaqoavcpmtj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deva.mediagallery",
+            "certificate_hash": "de26e9a723f624addfcf7d82aa4d9a6583cca754"
+          }
+        },
+        {
+          "client_id": "433457197262-bpeoukhbke6c5g327ajrm3fqbuah1li7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMdftfWI5Ouv7K-8q3JVhNhRXZvc-bDH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433457197262-bpeoukhbke6c5g327ajrm3fqbuah1li7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
