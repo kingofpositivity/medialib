@@ -83,7 +83,11 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.storage.ktx)
-
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime) // Ensure you use the latest version
+   // ksp("androidx.room:room-compiler:2.6.1")
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 

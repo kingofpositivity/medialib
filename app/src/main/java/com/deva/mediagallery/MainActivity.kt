@@ -1,5 +1,7 @@
 package com.deva.mediagallery
 
+import MediaViewModel
+import MediaViewModelFactory
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
@@ -8,14 +10,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.deva.mediagallery.ui.theme.MediaLibraryTheme
 import com.deva.mediagallery.viewmodel.AuthViewModel
-import com.deva.mediagallery.viewmodel.MediaViewModel
-import com.google.firebase.auth.FirebaseAuth
+ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
     private val authViewModel: AuthViewModel by viewModels()
@@ -52,7 +54,15 @@ class MainActivity : ComponentActivity() {
                             LoginScreen(navController, authViewModel)
                         }
                         composable("gallery") {
-                            val mediaViewModel: MediaViewModel = viewModel()
+                            val context = LocalContext.current
+
+// Use remember to ensure database instance is not recreated on recomposition
+                            val app = application as MediaApp
+                            val mediaDao = app.database.mediaDao()
+
+                            val mediaViewModel: MediaViewModel = viewModel(factory = MediaViewModelFactory(mediaDao))
+
+
                             MediaGalleryScreen(navController, mediaViewModel)
                         }
 
