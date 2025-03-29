@@ -18,23 +18,31 @@ class MediaViewModel(private val mediaDao: MediaDao) : ViewModel() {
     }
 
     fun fetchMedia() {
-        firestore.collection("media").addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                Log.e("DEVAPPLOG", "Failed to listen for media updates: ${error.message}")
-                return@addSnapshotListener
+        viewModelScope.launch {
+            val localMedia = mediaDao.getAllMedia()
+            if (localMedia.isNotEmpty()) {
+                _mediaList.value = localMedia
+                return@launch
             }
 
-            if (snapshot != null) {
-                val media = snapshot.documents.mapNotNull { it.toObject(MediaItemData::class.java) }
-                Log.d("DEVAPPLOG", "Live update received: ${media.size} items")
-
-                _mediaList.value = media
-
-                viewModelScope.launch {
-                    mediaDao.clearMedia()
-                    mediaDao.insertMedia(media)
+            firestore.collection("media").get()
+                .addOnSuccessListener { snapshot ->
+                    val media = snapshot.documents.mapNotNull { doc ->
+                        val mediaItem = doc.toObject(MediaItemData::class.java)
+                        if (mediaItem != null) {
+                            val isVideo = mediaItem.url.endsWith(".mp4") || mediaItem.type == "video"
+                            Log.d("MediaGallery", "Fetched ${if (isVideo) "Video" else "Photo"}: ${mediaItem.url}")
+                        } else {
+                            Log.e("MediaGallery", "Invalid media data in Firestore")
+                        }
+                        mediaItem
+                    }
+                    _mediaList.value = media
                 }
-            }
+                .addOnFailureListener { e ->
+                    Log.e("DEVAPPLOG", "Failed to fetch media: ${e.message}")
+                }
+
         }
     }
 }
