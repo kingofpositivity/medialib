@@ -7,11 +7,11 @@ import androidx.room.Query
 
 @Dao
 interface MediaDao {
-    @Query("SELECT * FROM media ORDER BY uploadDate DESC")
-    suspend fun getAllMedia(): List<MediaItem>
+    @Query("SELECT * FROM media ORDER BY name DESC")
+    suspend fun getAllMedia(): List<MediaItemData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMedia(media: List<MediaItem>) // Accepts List instead of vararg
+    suspend fun insertMedia(media: List<MediaItemData>) // Accepts List instead of vararg
 
     @Query("DELETE FROM media")
     suspend fun clearMedia()

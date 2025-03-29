@@ -4,7 +4,8 @@ plugins {
     id("kotlin-kapt")
     id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.plugin.compose")
-}
+    id("com.google.devtools.ksp")
+ }
 
 android {
     namespace = "com.deva.mediagallery"
@@ -57,7 +58,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.activity.compose)
-
+    implementation ("androidx.media3:media3-exoplayer:1.3.1")
+    implementation ("androidx.media3:media3-ui:1.3.1")
     // Jetpack Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -76,8 +78,6 @@ dependencies {
 
     // Coil for image loading
     implementation(libs.coil.compose)
-
-    // Dependency Injection (Hilt)
     implementation(libs.hilt.android)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
@@ -85,9 +85,11 @@ dependencies {
     implementation(libs.firebase.storage.ktx)
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.runtime) // Ensure you use the latest version
-   // ksp("androidx.room:room-compiler:2.6.1")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
+    ksp(libs.androidx.room.compiler)
+
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
