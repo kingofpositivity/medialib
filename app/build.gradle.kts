@@ -5,7 +5,7 @@ plugins {
     id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.devtools.ksp")
- }
+}
 
 android {
     namespace = "com.deva.mediagallery"
@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.deva.mediagallery"
-        minSdk = 24
+        minSdk = 23
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -58,8 +58,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation ("androidx.media3:media3-exoplayer:1.3.1")
-    implementation ("androidx.media3:media3-ui:1.3.1")
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+    implementation("androidx.media3:media3-ui:1.3.1")
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
     // Jetpack Compose
     implementation(platform(libs.androidx.compose.bom))
@@ -67,7 +67,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-
 
 
     // Jetpack Compose Navigation
@@ -96,7 +95,7 @@ dependencies {
 
     // Google Sign-In
     implementation(libs.play.services.auth)
-    implementation (libs.play.services.location)
+    implementation(libs.play.services.location)
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

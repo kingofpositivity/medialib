@@ -11,7 +11,14 @@ interface MediaDao {
     suspend fun getAllMedia(): List<MediaItemData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMedia(media: List<MediaItemData>) // Accepts List instead of vararg
+    suspend fun insertMedia(media: List<MediaItemData>)
+
+    @Query("DELETE FROM media")
+    suspend fun deleteAllMedia()
+
+    @Query("DELETE FROM media WHERE id = :mediaId")
+    suspend fun deleteById(mediaId: String)
+
 
     @Query("DELETE FROM media")
     suspend fun clearMedia()
