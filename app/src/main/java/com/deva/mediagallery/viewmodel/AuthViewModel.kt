@@ -12,6 +12,19 @@ import kotlinx.coroutines.launch
 class AuthViewModel : ViewModel() {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
+
+    private val _userId = MutableStateFlow(firebaseAuth.currentUser?.uid ?: "")
+    val userId: StateFlow<String> get() = _userId
+
+    init {
+        // Listen for auth state changes
+        firebaseAuth.addAuthStateListener { auth ->
+            viewModelScope.launch {
+                _userId.value = auth.currentUser?.uid ?: ""
+            }
+        }
+    }
+
     private val _isUserLoggedIn = MutableStateFlow(firebaseAuth.currentUser != null)
     val isUserLoggedIn: StateFlow<Boolean> get() = _isUserLoggedIn
 
@@ -20,8 +33,7 @@ class AuthViewModel : ViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     _isUserLoggedIn.value = true
-                    val userId = firebaseAuth.currentUser?.uid ?: "Unknown User"
-                    Log.d("DEVAPPLOG", "Login successful - User ID: $userId")
+                    _userId.value = firebaseAuth.currentUser?.uid ?: ""
                     onSuccess()
                 } else {
                     val errorMsg = task.exception?.message ?: "Login failed"
@@ -35,6 +47,7 @@ class AuthViewModel : ViewModel() {
         try {
             firebaseAuth.signOut()
             _isUserLoggedIn.value = false
+            _userId.value = ""
             Log.d("DEVAPPLOG", "User signed out successfully")
         } catch (e: Exception) {
             Log.e("DEVAPPLOG", "Error during sign-out", e)
