@@ -155,7 +155,7 @@ fun MediaGalleryScreen(
                 actions = {
                     LogoutButton(onLogout = {
                         firebaseAuth.value.signOut()
-                        // ✅ Navigate to login and clear the back stack
+                        //  Navigate to login and clear the back stack
                         navController.navigate("login") {
                             popUpTo("gallery") { inclusive = true }
                         }

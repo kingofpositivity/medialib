@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
             setContent {
                 MediaLibraryTheme {
                     val navController = rememberNavController()
-                    val userId by authViewModel.userId.collectAsState() // ✅ Observe userId dynamically
+                    val userId by authViewModel.userId.collectAsState() //  Observe userId dynamically
                     val isUserLoggedIn = FirebaseAuth.getInstance().currentUser != null
 
                     NavHost(
@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
                             val app = context.applicationContext as MediaApp
                             val mediaDao = app.database.mediaDao()
 
-                            // ✅ Pass userId to MediaViewModel using factory
+                            //  Pass userId to MediaViewModel using factory
                             val mediaViewModel: MediaViewModel =
                                 viewModel(factory = MediaViewModelFactory(mediaDao, userId))
 

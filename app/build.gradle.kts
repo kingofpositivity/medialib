@@ -58,9 +58,9 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation("androidx.media3:media3-exoplayer:1.3.1")
-    implementation("androidx.media3:media3-ui:1.3.1")
-    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation(libs.androidx.media3.exoplayer.v131)
+    implementation(libs.androidx.media3.ui.v131)
+    implementation(libs.compose)
     // Jetpack Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)

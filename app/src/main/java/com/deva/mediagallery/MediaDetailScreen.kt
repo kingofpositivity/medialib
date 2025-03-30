@@ -114,8 +114,8 @@ fun MediaDetailScreen(mediaId: String, userId: String, navController: NavHostCon
                     .padding(paddingValues)
                     .fillMaxSize()
             ) {
-                Log.d("MediaDetailScreen", "Media URL: ${mediaItem.url}") // ✅ Log media URL
-                if (mediaItem.mimeType?.startsWith("video") == true) { // ✅ Check mimeType for accuracy                    Log.d("MediaDetailScreen", "Detected Video File")
+                Log.d("MediaDetailScreen", "Media URL: ${mediaItem.url}") //  Log media URL
+                if (mediaItem.mimeType?.startsWith("video") == true) { //  Check mimeType for accuracy                    Log.d("MediaDetailScreen", "Detected Video File")
                     VideoPlayerComponent(mediaItem.url)
                 } else {
                     Log.d("MediaDetailScreen", "Detected Image File")
@@ -124,7 +124,7 @@ fun MediaDetailScreen(mediaId: String, userId: String, navController: NavHostCon
                         contentDescription = mediaItem.name,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(300.dp)
+                            .height(500.dp)
                     )
                 }
 
@@ -138,7 +138,7 @@ fun MediaDetailScreen(mediaId: String, userId: String, navController: NavHostCon
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // ✅ Download & Delete Buttons (Still Present)
+                    //  Download & Delete Buttons (Still Present)
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier.fillMaxWidth()
@@ -157,7 +157,7 @@ fun MediaDetailScreen(mediaId: String, userId: String, navController: NavHostCon
                                         context,
                                         navController,
                                         mediaViewModel, userId
-                                    ) // ✅ Pass mediaViewModel
+                                    ) //  Pass mediaViewModel
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
@@ -215,7 +215,7 @@ fun VideoPlayerComponent(videoUrl: String) {
         },
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp)
+            .height(500.dp)
     )
 
     DisposableEffect(Unit) {
@@ -233,7 +233,7 @@ suspend fun deleteMedia(
     mediaUrl: String,
     context: Context,
     navController: NavHostController,
-    viewModel: MediaViewModel, // ✅ Pass ViewModel to update UI
+    viewModel: MediaViewModel, //  Pass ViewModel to update UI
     userId: String
 ) {
     val firestore = FirebaseFirestore.getInstance()
@@ -251,11 +251,11 @@ suspend fun deleteMedia(
                     Log.d("deleteMedia", "Media deleted from Firestore")
 
                     // 🔴 SECOND: Remove from Room Database
-                    viewModel.deleteMediaById(mediaId, userId) // ✅ Delete from Room
+                    viewModel.deleteMediaById(mediaId, userId) //  Delete from Room
 
                     Toast.makeText(context, "Media deleted", Toast.LENGTH_SHORT).show()
 
-                    // ✅ Refresh UI Immediately
+                    //  Refresh UI Immediately
                     viewModel.fetchMedia(userId) // 🔄 Fetch latest media list
 
                     navController.popBackStack() // Navigate back
