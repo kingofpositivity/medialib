@@ -21,6 +21,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -39,6 +41,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -55,7 +58,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val network = connectivityManager.activeNetwork
     val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
-
+    var isPasswordVisible by remember { mutableStateOf(false) } // Track password visibility
     val isInternetAvailable = networkCapabilities != null && networkCapabilities.hasCapability(
         NetworkCapabilities.NET_CAPABILITY_INTERNET
     )
@@ -77,7 +80,8 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
     // Background Image & Theme Colors
     val bgImage = if (isDayTime) R.drawable.day else R.drawable.night
     val textColor = if (isDayTime) Color.Black else Color.White
-    val buttonColor = if (isDayTime) Color(0xFF6200EE) else Color(0xFFBB86FC)
+    val buttonColor = if (isDayTime) Color.Black else Color(0xFFFFAC07) // Gold color for night mode
+
 
     // Ensure that content doesn't collide with the status bar or system UI
 
@@ -129,7 +133,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Welcome to Your Gallery App!",
+                text = "Welcome to Media Library Application!",
                 fontSize = 24.sp,
                 color = textColor
             )
@@ -146,16 +150,24 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
             )
 
             Spacer(modifier = Modifier.height(8.dp))
-
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it.trim() },
                 label = { Text("Password", color = textColor) },
                 singleLine = true,
                 textStyle = LocalTextStyle.current.copy(color = textColor),
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                        Icon(
+                            painter = painterResource(id = if (isPasswordVisible) R.drawable.ic_eye_open else R.drawable.ic_eye_closed),
+                            contentDescription = if (isPasswordVisible) "Hide password" else "Show password"
+                        )
+                    }
+                },
                 isError = errorMessage != null
             )
+
 
             Spacer(modifier = Modifier.height(16.dp))
 
