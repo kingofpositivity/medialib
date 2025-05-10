@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -12,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.deva.mediagallery"
-        minSdk = 24
+        minSdk = 23
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -57,14 +58,15 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.activity.compose)
-
+    implementation(libs.androidx.media3.exoplayer.v131)
+    implementation(libs.androidx.media3.ui.v131)
+    implementation(libs.compose)
     // Jetpack Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-
 
 
     // Jetpack Compose Navigation
@@ -76,20 +78,24 @@ dependencies {
 
     // Coil for image loading
     implementation(libs.coil.compose)
-
-    // Dependency Injection (Hilt)
     implementation(libs.hilt.android)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
+    ksp(libs.androidx.room.compiler)
 
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
     // Google Sign-In
     implementation(libs.play.services.auth)
-    implementation (libs.play.services.location)
+    implementation(libs.play.services.location)
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

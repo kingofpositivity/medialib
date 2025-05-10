@@ -1,5 +1,7 @@
 package com.deva.mediagallery
 
+import MediaDetailScreen
+import MediaViewModelFactory
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
@@ -8,13 +10,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.deva.mediagallery.ui.theme.MediaLibraryTheme
 import com.deva.mediagallery.viewmodel.AuthViewModel
-import com.deva.mediagallery.viewmodel.MediaViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
@@ -42,18 +46,34 @@ class MainActivity : ComponentActivity() {
             setContent {
                 MediaLibraryTheme {
                     val navController = rememberNavController()
+                    val userId by authViewModel.userId.collectAsState() //  Observe userId dynamically
                     val isUserLoggedIn = FirebaseAuth.getInstance().currentUser != null
 
                     NavHost(
                         navController = navController,
-                        startDestination = if (isUserLoggedIn) "gallery" else "login"
+
+                        startDestination = if (isUserLoggedIn) "gallery/${FirebaseAuth.getInstance().currentUser?.uid}" else "login"
                     ) {
                         composable("login") {
                             LoginScreen(navController, authViewModel)
                         }
-                        composable("gallery") {
-                            val mediaViewModel: MediaViewModel = viewModel()
-                            MediaGalleryScreen(navController, mediaViewModel)
+                        composable("mediaDetail/{mediaId}") { backStackEntry ->
+                            val mediaId =
+                                backStackEntry.arguments?.getString("mediaId") ?: return@composable
+                            MediaDetailScreen(mediaId, userId, navController)
+                        }
+                        composable("gallery/{userId}") { backStackEntry ->
+                            val userId = backStackEntry.arguments?.getString("userId") ?: ""
+
+                            val context = LocalContext.current
+                            val app = context.applicationContext as MediaApp
+                            val mediaDao = app.database.mediaDao()
+
+                            //  Pass userId to MediaViewModel using factory
+                            val mediaViewModel: MediaViewModel =
+                                viewModel(factory = MediaViewModelFactory(mediaDao, userId))
+
+                            MediaGalleryScreen(navController, userId, mediaViewModel)
                         }
 
                     }
